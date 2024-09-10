@@ -34,13 +34,13 @@ module "vpc" {
   name = "vpc-${var.name}"
   cidr = var.vpc_cidr_block
 
-  azs             = data.aws_availability_zones.available.names
+  azs             = local.azs
   private_subnets = local.private_subnet_cidrs
   public_subnets  = local.public_subnet_cidrs
 
   enable_nat_gateway     = true
   single_nat_gateway     = false
-  one_nat_gateway_per_az = false
+  one_nat_gateway_per_az = true
 
   reuse_nat_ips       = true
   external_nat_ip_ids = [for eip in aws_eip.nat_gateway : eip.id]
