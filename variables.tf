@@ -28,6 +28,8 @@ variable "vpc_cidr_block" {
 # }
 
 variable "az_counts" {
-  default = 3
+  type        = number
+  default     = 3
+  description = "The Number of availability zones to create subnets in"
 }
 
