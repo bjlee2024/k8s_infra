@@ -17,6 +17,12 @@ variable "env" {
   description = "Environment of the cluster."
 }
 
+variable "eks_version" {
+  type        = string
+  default     = "1.30"
+  description = "The version of EKS to use."
+}
+
 variable "vpc_cidr_block" {
   type        = string
   default     = "10.0.0.0/16"
@@ -38,4 +44,10 @@ variable "public_subnet_cidrs" {
 variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
   description = "The availability zones to create subnets in, should be input where calling this module"
+}
+
+variable "instance_types" {
+  type        = list(string)
+  default     = ["t3.medium"]
+  description = "The instance type for the EKS nodes."
 }
