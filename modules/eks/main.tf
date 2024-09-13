@@ -1,3 +1,6 @@
+# Purpose: Create EKS cluster
+# Created by byeongjin lee
+
 resource "aws_iam_role" "eks" {
   name = "${var.env}-${var.region}-${var.name}-eks-role"
   assume_role_policy = jsonencode({
@@ -33,7 +36,11 @@ resource "aws_eks_cluster" "eks" {
   }
 
   access_config {
-    authentication_mode                         = "API"
+    # https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/auth-configmap.html
+    # aws-auth ConfigMap is deprecated, use the Kubernetes API to manage RBAC permissions.
+    authentication_mode = "API"
+    # we wll use helm chart or k8s yaml resource to deploy
+    # so we don't need to create a bootstrap user and this wuold be false in production
     bootstrap_cluster_creator_admin_permissions = true
   }
 }

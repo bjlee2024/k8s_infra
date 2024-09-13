@@ -1,7 +1,13 @@
 
 resource "aws_vpc" "eks_network" {
-  cidr_block           = var.vpc_cidr_block
+  cidr_block = var.vpc_cidr_block
+
+  # This is for some addons such like EFS CSI driver or Client VPN
+  # I'm not sure on now if it should be put back to variables.tf
+  # TODO : Check if this is needed
+  enable_dns_support   = true
   enable_dns_hostnames = true
+
   tags = {
     Name = "${var.region}-${var.name}-vpc"
   }
@@ -53,6 +59,8 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
+  depends_on = [aws_internet_gateway.eks_igw]
+
   count = local.az_count
 
   allocation_id = aws_eip.nat[count.index].id
