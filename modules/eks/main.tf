@@ -31,7 +31,6 @@ resource "aws_eks_cluster" "eks" {
     endpoint_public_access  = true
     endpoint_private_access = false
 
-
     subnet_ids = var.private_subnet_ids
   }
 

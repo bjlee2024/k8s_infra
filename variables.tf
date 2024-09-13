@@ -22,13 +22,13 @@ variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC."
 }
 
-
 variable "availability_zones" {
-  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  type        = list(string)
+  default     = []
   description = "The availability zones to create subnets in"
 }
 
-variable "az_counts" {
+variable "az_count" {
   type        = number
   default     = 3
   description = "The Number of availability zones to create subnets in"

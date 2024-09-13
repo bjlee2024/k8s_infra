@@ -6,7 +6,8 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-  azs = slice(data.aws_availability_zones.available.names, 0, var.az_counts)
+  # if no azs are provided, we will use the first az_count available zones
+  azs = length(var.availability_zones) == 0 ? slice(data.aws_availability_zones.available.names, 0, var.az_count) : var.availability_zones
 
   # this will calculate the cidr blocks for the subnets based on the VPC cidr block and az counts
   # private subnets will have 256 addresses each
@@ -19,6 +20,7 @@ module "vpc" {
   source               = "./modules/vpc"
   name                 = var.name
   region               = var.region
+  env                  = var.env
   vpc_cidr_block       = var.vpc_cidr_block
   availability_zones   = local.azs
   private_subnet_cidrs = local.private_subnet_cidrs
