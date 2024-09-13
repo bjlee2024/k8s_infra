@@ -3,12 +3,17 @@ resource "aws_vpc" "eks_network" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
   tags = {
-    Name = var.name
+    Name = "${var.region}-${var.name}-vpc"
   }
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.eks_network.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.eks_igw.id
+  }
 
   tags = {
     Name = "${var.name}-public-rt"
@@ -21,9 +26,8 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.eks_network.id
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat_gateway[count.index].id
-    # egress_only_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
   }
 
   tags = {
@@ -38,11 +42,6 @@ resource "aws_internet_gateway" "eks_igw" {
   }
 }
 
-resource "aws_route" "internet_gateway" {
-  route_table_id         = aws_route_table.public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.eks_igw.id
-}
 
 resource "aws_eip" "nat" {
   count = local.az_count

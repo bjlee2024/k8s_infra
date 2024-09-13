@@ -12,10 +12,11 @@ resource "aws_subnet" "public" {
   cidr_block        = var.public_subnet_cidrs[count.index]
 
   tags = {
-    Name = "${var.name}-public-${var.availability_zones[count.index]}"
-    # "kubernetes.io/role/elb"         = "1"
+    Name                     = "${var.name}-public-${var.availability_zones[count.index]}"
+    "kubernetes.io/role/elb" = "1"
     # "kubernetes.io/role/alb-ingress" = "1"
-    "subnet-type" = "public"
+    "kubernetes.io/cluster/${var.env}-${var.name}" = "owned"
+    "subnet-type"                                  = "public"
   }
 
   # lifecycle {
@@ -39,10 +40,10 @@ resource "aws_subnet" "private" {
   cidr_block        = var.private_subnet_cidrs[count.index]
 
   tags = {
-    Name = "${var.name}-private-${var.availability_zones[count.index]}"
-    # "kubernetes.io/role/elb"         = "1"
-    # "kubernetes.io/role/alb-ingress" = "1"
-    "subnet-type" = "private"
+    Name                                           = "${var.name}-private-${var.availability_zones[count.index]}"
+    "kubernetes.io/role/internal-elb"              = "1"
+    "kubernetes.io/cluster/${var.env}-${var.name}" = "owned"
+    "subnet-type"                                  = "private"
   }
 
   # lifecycle {

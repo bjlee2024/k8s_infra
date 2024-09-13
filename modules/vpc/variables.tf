@@ -11,6 +11,12 @@ variable "region" {
   description = "Region where this stack will be deployed."
 }
 
+variable "env" {
+  type        = string
+  default     = "dev"
+  description = "Environment of the cluster."
+}
+
 variable "vpc_cidr_block" {
   type        = string
   default     = "10.0.0.0/16"
