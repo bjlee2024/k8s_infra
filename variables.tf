@@ -10,10 +10,10 @@ variable "region" {
   description = "Region where this stack will be deployed."
 }
 
-variable "aws_profile" {
+variable "env" {
   type        = string
-  default     = "poc"
-  description = "profile name for credential"
+  default     = "dev"
+  description = "Environment of the cluster."
 }
 
 variable "vpc_cidr_block" {
@@ -22,10 +22,11 @@ variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC."
 }
 
-# variable "availability_zones" {
-#   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
-#   description = "The availability zones to create subnets in"
-# }
+
+variable "availability_zones" {
+  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  description = "The availability zones to create subnets in"
+}
 
 variable "az_counts" {
   type        = number
@@ -33,3 +34,14 @@ variable "az_counts" {
   description = "The Number of availability zones to create subnets in"
 }
 
+# for eks module
+variable "eks_version" {
+  type        = string
+  default     = "1.30"
+  description = "The version of EKS to use."
+}
+variable "instance_types" {
+  type        = list(string)
+  default     = ["t3.medium"]
+  description = "The instance type for the EKS nodes."
+}

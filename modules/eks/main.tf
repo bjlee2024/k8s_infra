@@ -32,7 +32,7 @@ resource "aws_eks_cluster" "eks" {
     endpoint_private_access = false
 
 
-    subnet_ids = module.vpc.private_subnet_ids
+    subnet_ids = var.private_subnet_ids
   }
 
   access_config {

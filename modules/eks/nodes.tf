@@ -36,10 +36,10 @@ resource "aws_eks_node_group" "general_ondemand_nodes" {
   depends_on = [
     aws_ima_role_policy_attachment.eks_worker_nodes_policy,
     aws_ima_role_policy_attachment.eks_cni_policy,
-    aws_ima_role_policy_attachment.eks_ec2_container_registry_policy,
+    aws_ima_role_policy_attachment.eks_ec2_container_registry_policy
   ]
 
-  cluster_name = aws_eks_cluster.eks.name
+  cluster_name = var.name
   version      = var.eks_version
 
   node_group_name = "general-ondemand-nodes-eks-nodes"
@@ -48,7 +48,7 @@ resource "aws_eks_node_group" "general_ondemand_nodes" {
   # it's better to use private subnets for the nodes
   # and it should be in different AZs, at least 2
   # actually we will use 3 private subnets for each different azs
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = var.private_subnet_ids
 
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html
   # default for purchasing option is "ON_DEMAND"
