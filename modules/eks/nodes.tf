@@ -32,14 +32,16 @@ resource "aws_iam_role_policy_attachment" "eks_ec2_container_registry_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
-resource "aws_eks_node_group" "general_ondemand_nodes" {
-  depends_on = [
-    aws_ima_role_policy_attachment.eks_worker_nodes_policy,
-    aws_ima_role_policy_attachment.eks_cni_policy,
-    aws_ima_role_policy_attachment.eks_ec2_container_registry_policy
-  ]
+resource "aws_eks_node_group" "general_on_demand" {
+  # "has not been declared in module.eks." is popped up when using the below code
+  # i'm not sure why it's happening ㅋㅋ
+  # # depends_on = [
+  #   aws_ima_role_policy_attachment.eks_worker_nodes_policy,
+  #   aws_ima_role_policy_attachment.eks_cni_policy,
+  #   aws_ima_role_policy_attachment.eks_ec2_container_registry_policy,
+  # ]
 
-  cluster_name = var.name
+  cluster_name = aws_eks_cluster.eks.name
   version      = var.eks_version
 
   node_group_name = "general-ondemand-nodes-eks-nodes"
