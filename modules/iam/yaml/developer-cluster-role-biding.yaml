@@ -1,0 +1,17 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deveolper-binding
+roleRef:
+  kind: ClusterRole
+  name: cluster-developer
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: Group
+    name: eks-developer-from-iam-role
+    apiGroup: rbac.authorization.k8s.io
+  - kind: Group
+    name: eks-developer-from-iam-user
+    apiGroup: rbac.authorization.k8s.io
+

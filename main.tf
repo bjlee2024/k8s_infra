@@ -36,3 +36,10 @@ module "eks" {
   private_subnet_ids = module.vpc.private_subnet_ids
   instance_types     = var.instance_types
 }
+
+module "iam" {
+  source   = "./modules/iam"
+  eks_name = module.eks.eks_cluster_name
+  env      = var.env
+  region   = var.region
+}
